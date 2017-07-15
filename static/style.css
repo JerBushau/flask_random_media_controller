@@ -1,0 +1,44 @@
+body {
+  background: #222;
+  color: #FFF;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-section,
+label {
+  margin:0 0 1em;
+}
+
+label {
+  margin-right: 0.5em;
+}
+
+input {
+  width: 40px;
+}
+
+h1 {
+  margin-bottom: 0;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+p {
+  text-align: center;
+}

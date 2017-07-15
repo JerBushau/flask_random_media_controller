@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}Howdy | {{ super() }}{% endblock %}
+
+{% block content %}
+
+<div class="main-wrapper">
+  <h1>Welcome!</h1>
+  <h3>Pick a category and enjoy!</h3>
+
+  <form class="main-form">
+    <div class="form-section">
+      <label>Catagory: </label>
+      <select id="category">
+        <option value="tv">tv</option>
+        <option value="movies">movies</option>
+        <option value="anime">anime</option>
+      </select>
+    </div>
+
+    <div class="form-section">
+      <label>Number: </label>
+      <input id="number" type="text" name="number">
+    </div>
+
+    <button>submit</button>
+  </form>
+</div>
+
+{% endblock %}
