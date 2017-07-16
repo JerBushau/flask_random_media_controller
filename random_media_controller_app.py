@@ -8,14 +8,32 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+controller = random_media.Manager()
 
 @app.route('/api/<cat>/<num>')
 def run_random_media(cat="tv", num=3):
     context = {'cat': cat, "num": num}
-    if cat:
-        random_media.run(cat, num)
+    if cat and controller.player.is_playing() == 0:
+        controller.run(cat, num)
+        return '', 200
+    else:
+        return '', 500
 
-    return render_template('result.html', **context)
+@app.route('/api/next')
+def next():
+    controller.next()
+    return '', 200
 
+
+@app.route('/api/prev')
+def prev():
+    controller.prev()
+    return '', 200
+
+
+@app.route('/api/stop')
+def destroy():
+    controller.stop()
+    return '', 200
 
 app.run(debug=True, port=8000, host='0.0.0.0')

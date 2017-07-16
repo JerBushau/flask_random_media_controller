@@ -1,19 +1,25 @@
 'use strict'
 
-const mainForm = document.querySelector('.main-form');
+const mainForm = document.getElementById('main-form');
+const nextBttn = document.getElementById('next-button');
+const prevBttn = document.getElementById('prev-button');
+const stopBttn = document.getElementById('stop-button');
+// const api = 'http://localhost:8000/api/'
+let api ='http://192.168.1.104:8000/api/'
 
-function sendApiRequest(cat, num) {
+function sendApiRequest(apiEndpoint, cb) {
   let xmlhttp = new XMLHttpRequest();
-  let apiEndpoint =`http://192.168.1.143:8000/api/${cat}/${num}`;
 
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
       if (xmlhttp.status == 200) {
-        console.log('wo0t success!');
+        if (cb) { cb() };
+        return console.log('wo0t success!');
       } else if (xmlhttp.status == 400) {
-        console.error('There was an error 400');
-      } else {
-        console.error('something else other than 200 was returned');
+        return console.error('There was an error 400');
+      } else if (xmlhttp.status == 500) {
+
+        return console.error('');
       }
     }
   };
@@ -22,12 +28,43 @@ function sendApiRequest(cat, num) {
   xmlhttp.send();
 }
 
+function queueSuccessNotification(cat, num) {
+  let successDiv = document.getElementById('success-notification');
+
+  successDiv.textContent = `${num} random ${cat} files added to playlist!`;
+  successDiv.classList.remove('hidden');
+
+  setTimeout(_ => {
+    successDiv.classList.add('hidden');
+  }, 3000);
+}
+
 mainForm.addEventListener('submit', e => {
   let cat = document.getElementById('category');
   let num = document.getElementById('number');
 
   e.preventDefault();
-  sendApiRequest(cat.value, num.value || 3);
+
+  if (!cat.value) {
+    return
+  }
+
+  sendApiRequest(api + `${cat.value}/${num.value || 3}`, _ => {
+    queueSuccessNotification(cat.value, num.value || 3);
+  });
+
   cat.value = '';
   num.value = '';
+});
+
+nextBttn.addEventListener('click', e => {
+  sendApiRequest((api + 'next'));
+});
+
+prevBttn.addEventListener('click', e => {
+  sendApiRequest((api + 'prev'));
+});
+
+stopBttn.addEventListener('click', e => {
+  sendApiRequest((api + 'stop'));
 });
