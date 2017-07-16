@@ -5,7 +5,7 @@ const nextBttn = document.getElementById('next-button');
 const prevBttn = document.getElementById('prev-button');
 const stopBttn = document.getElementById('stop-button');
 // const api = 'http://localhost:8000/api/'
-let api ='http://192.168.1.104:8000/api/'
+let api ='http://192.168.1.143:8000/api/'
 
 function sendApiRequest(apiEndpoint, cb) {
   let xmlhttp = new XMLHttpRequest();

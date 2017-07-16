@@ -14,7 +14,7 @@ manager = random_media.Manager()
 def run_random_media(cat="tv", num=3):
     context = {'cat': cat, "num": num}
     if cat and manager.player.is_playing() == 0:
-        manager.run(cat, num)
+        manager.play(cat, num)
         return '', 200
     else:
         return '', 500
