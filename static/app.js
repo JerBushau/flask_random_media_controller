@@ -18,7 +18,6 @@ function sendApiRequest(apiEndpoint, cb) {
       } else if (xmlhttp.status == 400) {
         return console.error('There was an error 400');
       } else if (xmlhttp.status == 500) {
-
         return console.error('');
       }
     }
@@ -38,6 +37,8 @@ function queueSuccessNotification(cat, num) {
     successDiv.classList.add('hidden');
   }, 3000);
 }
+
+// events
 
 mainForm.addEventListener('submit', e => {
   let cat = document.getElementById('category');

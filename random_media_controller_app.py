@@ -3,12 +3,12 @@ from flask import render_template
 import random_media
 
 app = Flask(__name__)
+manager = random_media.Manager()
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-manager = random_media.Manager()
 
 @app.route('/api/<cat>/<num>')
 def run_random_media(cat="tv", num=3):
@@ -18,6 +18,7 @@ def run_random_media(cat="tv", num=3):
         return '', 200
     else:
         return '', 500
+
 
 @app.route('/api/next')
 def next():
@@ -35,5 +36,6 @@ def prev():
 def destroy():
     manager.stop()
     return '', 200
+
 
 app.run(debug=True, port=8000, host='0.0.0.0')

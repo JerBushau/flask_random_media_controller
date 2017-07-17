@@ -7,11 +7,8 @@ Gathers and plays a specified number of files from a specified media library in 
 
 '''
 
-import datetime
 import os
 import random
-import subprocess
-import time
 import vlc
 
 class Manager():
@@ -22,7 +19,8 @@ class Manager():
             'anime': ('/media/arab/Seagate Backup Plus Drive/Completed Media/Anime/')
         }
         self.instance = vlc.Instance()
-        self.player = self.instance.media_list_player_new()
+        self.player = self.instance.media_player_new()
+        self.listPlayer = self.instance.media_list_player_new()
 
     def create_all_media_list(self, catagory, all_media_array):
         for path, subdirs, files in os.walk(catagory):
@@ -30,37 +28,36 @@ class Manager():
                 if file.lower().endswith(('.mkv', '.m4v', '.mp4', '.divx', '.avi')):
                     all_media_array.append(os.path.join(path, file))
 
-
     def random_selection_from_media(self, in_array, out_array):
         random_selection = str(random.choice(in_array))
         if random_selection not in (out_array):
             out_array.append(random_selection)
 
-
     def get_selections(self, num, in_array, out_array):
         for i in range(int(num)):
             self.random_selection_from_media(in_array, out_array)
 
-    def play(self, cat, num):
-        if self.player.is_playing() != 0:
-            return
+    def get_playlist(self):
         all_media = []
         self.create_all_media_list(self.catagories[cat], all_media)
         playlist = []
         self.get_selections(num, all_media, playlist)
         playlist = self.instance.media_list_new(playlist)
-        self.player.set_media_list(playlist)
-        # clean this up
-        p = self.instance.media_player_new()
-        p.toggle_fullscreen()
-        self.player.set_media_player(p)
-        self.player.play()
+        return playlist
+
+    def play(self, cat, num):
+        if self.listPlayer.is_playing() != 0:
+            return
+        self.listPlayer.set_media_list(self.get_playlist())
+        self.player.toggle_fullscreen()
+        self.listPlayer.set_media_player(self.player)
+        self.listPlayer.play()
 
     def next(self):
-        self.player.next()
+        self.listPlayer.next()
 
     def prev(self):
-        self.player.previous()
+        self.listPlayer.previous()
 
     def stop(self):
-        self.player.stop()
+        self.listPlayer.stop()
