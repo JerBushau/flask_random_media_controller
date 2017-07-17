@@ -14,9 +14,9 @@ import vlc
 class Manager():
     def __init__(self):
         self.catagories = {
-            'tv': ('/media/arab/Seagate Backup Plus Drive/Completed Media/TV/'),
-            'movies': ('/media/arab/Seagate Backup Plus Drive/Completed Media/Movies/'),
-            'anime': ('/media/arab/Seagate Backup Plus Drive/Completed Media/Anime/')
+            'tv': ('/media/jer/Seagate Backup Plus Drive/Completed Media/TV/'),
+            'movies': ('/media/jer/Seagate Backup Plus Drive/Completed Media/Movies/'),
+            'anime': ('/media/jer/Seagate Backup Plus Drive/Completed Media/Anime/')
         }
         self.instance = vlc.Instance()
         self.player = self.instance.media_player_new()
@@ -37,7 +37,7 @@ class Manager():
         for i in range(int(num)):
             self.random_selection_from_media(in_array, out_array)
 
-    def get_playlist(self):
+    def get_playlist(self, cat, num):
         all_media = []
         self.create_all_media_list(self.catagories[cat], all_media)
         playlist = []
@@ -48,7 +48,7 @@ class Manager():
     def play(self, cat, num):
         if self.listPlayer.is_playing() != 0:
             return
-        self.listPlayer.set_media_list(self.get_playlist())
+        self.listPlayer.set_media_list(self.get_playlist(cat, num))
         self.player.toggle_fullscreen()
         self.listPlayer.set_media_player(self.player)
         self.listPlayer.play()

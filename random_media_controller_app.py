@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+import urllib.request
 import random_media
 
 app = Flask(__name__)
@@ -15,9 +16,22 @@ def run_random_media(cat="tv", num=3):
     context = {'cat': cat, "num": num}
     if cat and manager.player.is_playing() == 0:
         manager.play(cat, num)
-        return '', 200
+        return 'playin', 200
     else:
         return '', 500
+
+
+@app.route('/api/now_playing')
+def now_playing():
+    if manager.player.is_playing():
+        media = str(manager.player.get_media().get_mrl())
+        media = urllib.request.unquote(media)
+        media = media.split('/')[-1]
+        media = media.replace('.', ' ')
+        return  media, 200
+    else:
+      return 'Choose a catagory and hit start!', 200
+
 
 
 @app.route('/api/next')
